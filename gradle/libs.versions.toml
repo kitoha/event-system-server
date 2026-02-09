@@ -3,12 +3,13 @@ kotlin = "1.9.25"
 springBoot = "3.5.10"
 springDependencyManagement = "1.1.7"
 jackson = "2.17.0"
+testcontainers = "1.20.4"
 testcontainersRedis = "2.2.3"
 
 # Image Versions
-postgresImage = "postgres:15-alpine"
-redisImage = "redis:7-alpine"
-kafkaImage = "confluentinc/cp-kafka:7.5.0"
+postgresImage = "postgres:15.10-alpine3.21"
+redisImage = "redis:7.4.2-alpine3.21"
+kafkaImage = "confluentinc/cp-kafka:7.5.3"
 
 [libraries]
 # Kotlin
@@ -27,9 +28,9 @@ spring-kafka = { group = "org.springframework.kafka", name = "spring-kafka" }
 spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
 spring-boot-testcontainers = { group = "org.springframework.boot", name = "spring-boot-testcontainers" }
 kotlin-test-junit5 = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version.ref = "kotlin" }
-testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter" }
-testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql" }
-testcontainers-kafka = { group = "org.testcontainers", name = "kafka" }
+testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainers" }
+testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainers" }
+testcontainers-kafka = { group = "org.testcontainers", name = "kafka", version.ref = "testcontainers" }
 testcontainers-redis = { group = "com.redis", name = "testcontainers-redis", version.ref = "testcontainersRedis" }
 
 [plugins]
