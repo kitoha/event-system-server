@@ -1,7 +1,7 @@
 dependencies {
     implementation(project(":common"))
     implementation(project(":domain"))
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation(libs.spring.boot.starter.data.redis)
 }
 
 tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
