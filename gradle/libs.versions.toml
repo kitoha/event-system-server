@@ -3,6 +3,8 @@ kotlin = "1.9.25"
 springBoot = "3.5.10"
 springDependencyManagement = "1.1.7"
 jackson = "2.17.0"
+kotest = "5.9.0"
+mockk = "1.13.12"
 testcontainers = "1.20.4"
 testcontainersRedis = "2.2.3"
 
@@ -17,17 +19,23 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin" }
 
 # Spring Boot Starters
-spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web" }
-spring-boot-starter-webflux = { group = "org.springframework.boot", name = "spring-boot-starter-webflux" }
-spring-boot-starter-data-jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa" }
-spring-boot-starter-data-redis = { group = "org.springframework.boot", name = "spring-boot-starter-data-redis" }
-spring-boot-starter-batch = { group = "org.springframework.boot", name = "spring-boot-starter-batch" }
-spring-kafka = { group = "org.springframework.kafka", name = "spring-kafka" }
+springBootStarterWeb = { group = "org.springframework.boot", name = "spring-boot-starter-web" }
+springBootStarterWebflux = { group = "org.springframework.boot", name = "spring-boot-starter-webflux" }
+springBootStarterDataJpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa" }
+springBootStarterDataRedis = { group = "org.springframework.boot", name = "spring-boot-starter-data-redis" }
+springBootStarterBatch = { group = "org.springframework.boot", name = "spring-boot-starter-batch" }
+springKafka = { group = "org.springframework.kafka", name = "spring-kafka" }
+flywayCore = { group = "org.flywaydb", name = "flyway-core" }
+flywayDatabasePostgresql = { group = "org.flywaydb", name = "flyway-database-postgresql" }
 
 # Testing
-spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
-spring-boot-testcontainers = { group = "org.springframework.boot", name = "spring-boot-testcontainers" }
+springBootStarterTest = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
+springBootTestcontainers = { group = "org.springframework.boot", name = "spring-boot-testcontainers" }
 kotlin-test-junit5 = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit5", version.ref = "kotlin" }
+kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+kotest-extensions-spring = { group = "io.kotest.extensions", name = "kotest-extensions-spring", version = "1.1.3" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainers" }
 testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainers" }
 testcontainers-kafka = { group = "org.testcontainers", name = "kafka", version.ref = "testcontainers" }
@@ -36,5 +44,6 @@ testcontainers-redis = { group = "com.redis", name = "testcontainers-redis", ver
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
 springDependencyManagement = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }

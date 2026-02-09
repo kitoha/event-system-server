@@ -1,6 +1,6 @@
 dependencies {
-    testFixturesImplementation(libs.spring.boot.starter.test)
-    testFixturesImplementation(libs.spring.boot.testcontainers)
+    testFixturesImplementation(libs.springBootStarterTest)
+    testFixturesImplementation(libs.springBootTestcontainers)
     testFixturesImplementation(libs.testcontainers.postgresql)
     testFixturesImplementation(libs.testcontainers.kafka)
     testFixturesImplementation(libs.testcontainers.redis)

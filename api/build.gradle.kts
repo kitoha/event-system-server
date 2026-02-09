@@ -2,7 +2,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":queue"))
     implementation(project(":ticket"))
-    implementation(libs.spring.boot.starter.webflux)
+    implementation(libs.springBootStarterWebflux)
     
     testImplementation(testFixtures(project(":common")))
 }

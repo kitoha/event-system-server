@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.spring) apply false
+    alias(libs.plugins.kotlin.jpa) apply false
     alias(libs.plugins.spring.boot) apply false
     alias(libs.plugins.springDependencyManagement)
 }
@@ -20,6 +21,7 @@ val libsCatalog = libs
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+    apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "java-test-fixtures")
@@ -34,9 +36,13 @@ subprojects {
         "implementation"(libsCatalog.jackson.module.kotlin)
         "implementation"(libsCatalog.kotlin.reflect)
         
-        "testImplementation"(libsCatalog.spring.boot.starter.test)
-        "testImplementation"(libsCatalog.spring.boot.testcontainers)
+        "testImplementation"(libsCatalog.springBootStarterTest)
+        "testImplementation"(libsCatalog.springBootTestcontainers)
         "testImplementation"(libsCatalog.kotlin.test.junit5)
+        "testImplementation"(libsCatalog.kotest.runner.junit5)
+        "testImplementation"(libsCatalog.kotest.assertions.core)
+        "testImplementation"(libsCatalog.kotest.extensions.spring)
+        "testImplementation"(libsCatalog.mockk)
         "testImplementation"(libsCatalog.testcontainers.junit.jupiter)
         "testImplementation"(libsCatalog.testcontainers.postgresql)
         "testImplementation"(libsCatalog.testcontainers.kafka)
