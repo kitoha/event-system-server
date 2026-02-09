@@ -1,8 +1,8 @@
 dependencies {
     implementation(project(":common"))
     implementation(project(":domain"))
-    implementation(libs.spring.boot.starter.data.redis)
-    implementation(libs.spring.kafka)
+    implementation(libs.springBootStarterDataRedis)
+    implementation(libs.springKafka)
 }
 
 tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
