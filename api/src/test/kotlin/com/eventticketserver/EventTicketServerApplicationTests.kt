@@ -1,4 +1,4 @@
-package com.example.eventticketserver
+package com.eventticketserver
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
