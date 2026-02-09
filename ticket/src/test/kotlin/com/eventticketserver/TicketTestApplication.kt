@@ -1,6 +1,6 @@
-package com.eventticketserver.domain
+package com.eventticketserver
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
-class DomainTestApplication
+class TicketTestApplication
