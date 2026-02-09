@@ -61,7 +61,7 @@ event-ticket-server/
 └── common/             # 공통 유틸리티
 ```
 
-**모듈 상세**: [MODULE_STRUCTURE.md](docs/MODULE_STRUCTURE.md)
+**모듈 상세**: [MODULE_STRUCTURE.md](docs/adr/MODULE_STRUCTURE.md)
 
 ---
 

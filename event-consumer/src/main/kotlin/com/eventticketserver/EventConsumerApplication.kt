@@ -1,11 +1,11 @@
-package com.example.eventticketserver
+package com.eventticketserver
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class EventTicketServerApplication
+class EventConsumerApplication
 
 fun main(args: Array<String>) {
-    runApplication<EventTicketServerApplication>(*args)
+    runApplication<EventConsumerApplication>(*args)
 }
