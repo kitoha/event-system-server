@@ -14,10 +14,28 @@ class RedisInventoryManager(
         private const val INVENTORY_KEY_PREFIX = "event:inventory:"
     }
 
-    override fun decrease(eventId: Long): Boolean {
-        val key = "$INVENTORY_KEY_PREFIX$eventId"
-        
-        val result = redisTemplate.execute(decreaseInventoryScript, listOf(key))
-        return result == 1L
+        override fun decrease(eventId: Long): Boolean {
+
+            val key = "$INVENTORY_KEY_PREFIX$eventId"
+
+            
+
+            val result = redisTemplate.execute(decreaseInventoryScript, listOf(key))
+
+            return result == 1L
+
+        }
+
+    
+
+        override fun increase(eventId: Long) {
+
+            val key = "$INVENTORY_KEY_PREFIX$eventId"
+
+            redisTemplate.opsForValue().increment(key)
+
+        }
+
     }
-}
+
+    

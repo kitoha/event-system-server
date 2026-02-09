@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.data.redis.core.RedisTemplate
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 @SpringBootTest(classes = [TicketTestApplication::class])
@@ -35,28 +36,44 @@ class RedisInventoryManagerTest(
         val successCount = AtomicInteger(0)
         val failCount = AtomicInteger(0)
 
-        // When
-        for (i in 0 until threadCount) {
-            executorService.execute {
-                try {
-                    val result = inventoryManager.decrease(eventId)
-                    if (result) successCount.incrementAndGet()
-                    else failCount.incrementAndGet()
-                } finally {
-                    latch.countDown()
+        try {
+            // When
+            for (i in 0 until threadCount) {
+                executorService.execute {
+                    try {
+                        val result = inventoryManager.decrease(eventId)
+                        if (result) successCount.incrementAndGet()
+                        else failCount.incrementAndGet()
+                    } finally {
+                        latch.countDown()
+                    }
                 }
             }
-        }
-        latch.await()
 
-        // Then
-        successCount.get() shouldBe initialStock
-        failCount.get() shouldBe (threadCount - initialStock)
-        
-        val remainingStock = redisTemplate.opsForValue().get(inventoryKey).toString().toInt()
-        remainingStock shouldBe 0
-        
-        // Cleanup
-        redisTemplate.delete(inventoryKey)
+            // Wait with timeout (e.g., 10 seconds)
+            val completed = latch.await(10, TimeUnit.SECONDS)
+            if (!completed) {
+                throw RuntimeException("Test timed out waiting for threads to finish")
+            }
+
+            // Then
+            successCount.get() shouldBe initialStock
+            failCount.get() shouldBe (threadCount - initialStock)
+            
+            val remainingStock = redisTemplate.opsForValue().get(inventoryKey).toString().toInt()
+            remainingStock shouldBe 0
+        } finally {
+            // Cleanup
+            executorService.shutdown()
+            try {
+                if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+                    executorService.shutdownNow()
+                }
+            } catch (e: InterruptedException) {
+                executorService.shutdownNow()
+                Thread.currentThread().interrupt()
+            }
+            redisTemplate.delete(inventoryKey)
+        }
     }
 })
