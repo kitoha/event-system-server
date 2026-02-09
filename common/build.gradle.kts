@@ -1,5 +1,9 @@
 dependencies {
-    // Common utilities if any
+    testFixturesImplementation(libs.spring.boot.starter.test)
+    testFixturesImplementation(libs.spring.boot.testcontainers)
+    testFixturesImplementation(libs.testcontainers.postgresql)
+    testFixturesImplementation(libs.testcontainers.kafka)
+    testFixturesImplementation(libs.testcontainers.redis)
 }
 
 tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {

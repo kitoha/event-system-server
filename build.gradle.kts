@@ -1,8 +1,8 @@
 plugins {
-    kotlin("jvm") version "1.9.25" apply false
-    kotlin("plugin.spring") version "1.9.25" apply false
-    id("org.springframework.boot") version "3.5.10" apply false
-    id("io.spring.dependency-management") version "1.1.7"
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.spring) apply false
+    alias(libs.plugins.spring.boot) apply false
+    alias(libs.plugins.springDependencyManagement)
 }
 
 allprojects {
@@ -14,11 +14,15 @@ allprojects {
     }
 }
 
+// 캡처를 위해 변수 선언
+val libsCatalog = libs
+
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "java-test-fixtures")
 
     configure<JavaPluginExtension> {
         toolchain {
@@ -27,10 +31,16 @@ subprojects {
     }
 
     dependencies {
-        "implementation"("com.fasterxml.jackson.module:jackson-module-kotlin")
-        "implementation"("org.jetbrains.kotlin:kotlin-reflect")
-        "testImplementation"("org.springframework.boot:spring-boot-starter-test")
-        "testImplementation"("org.jetbrains.kotlin:kotlin-test-junit5")
+        "implementation"(libsCatalog.jackson.module.kotlin)
+        "implementation"(libsCatalog.kotlin.reflect)
+        
+        "testImplementation"(libsCatalog.spring.boot.starter.test)
+        "testImplementation"(libsCatalog.spring.boot.testcontainers)
+        "testImplementation"(libsCatalog.kotlin.test.junit5)
+        "testImplementation"(libsCatalog.testcontainers.junit.jupiter)
+        "testImplementation"(libsCatalog.testcontainers.postgresql)
+        "testImplementation"(libsCatalog.testcontainers.kafka)
+        "testImplementation"(libsCatalog.testcontainers.redis)
         "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
     }
 

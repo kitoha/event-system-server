@@ -1,8 +1,8 @@
 dependencies {
     implementation(project(":common"))
     implementation(project(":domain"))
-    implementation("org.springframework.boot:spring-boot-starter-batch")
-    implementation("org.springframework.kafka:spring-kafka")
+    implementation(libs.spring.boot.starter.batch)
+    implementation(libs.spring.kafka)
 }
 
 tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
