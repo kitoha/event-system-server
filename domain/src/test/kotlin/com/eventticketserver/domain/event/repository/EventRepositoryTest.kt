@@ -1,9 +1,9 @@
 package com.eventticketserver.domain.event.repository
 
 import com.eventticketserver.common.IntegrationTestSupport
-import com.eventticketserver.domain.DomainTestApplication
+import com.eventticketserver.DomainTestApplication
 import com.eventticketserver.domain.event.entity.Event
-import io.kotest.core.spec.style.StringSpec
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -17,13 +17,15 @@ import java.time.LocalDateTime
 @Import(IntegrationTestSupport::class)
 class EventRepositoryTest(
     private val eventRepository: EventRepository
-) : StringSpec({
+) : FunSpec({
+
+    extension(SpringExtension)
 
     val defaultTitle = "Spring Boot Performance Seminar"
     val defaultSeats = 50
     val futureOpenAt = LocalDateTime.now().plusDays(7)
 
-    "Event를 저장하고 다시 조회할 수 있어야 한다" {
+    test("Event를 저장하고 다시 조회할 수 있어야 한다") {
         // Given
         val event = Event.create(defaultTitle, defaultSeats, futureOpenAt)
 
@@ -36,6 +38,4 @@ class EventRepositoryTest(
         foundEvent.totalSeats shouldBe defaultSeats
         foundEvent.id shouldNotBe null
     }
-}) {
-    override fun extensions() = listOf(SpringExtension)
-}
+})
