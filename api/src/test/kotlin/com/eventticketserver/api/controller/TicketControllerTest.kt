@@ -1,7 +1,7 @@
 package com.eventticketserver.api.controller
 
 import com.eventticketserver.api.dto.TicketReserveRequest
-import com.eventticketserver.api.dto.TicketReserveResponse
+import com.eventticketserver.api.exception.GlobalExceptionHandler
 import com.eventticketserver.ticket.service.TicketingService
 import io.kotest.core.spec.style.FunSpec
 import io.mockk.every
@@ -14,7 +14,10 @@ class TicketControllerTest : FunSpec({
 
     val ticketingService = mockk<TicketingService>()
     val controller = TicketController(ticketingService)
-    val webTestClient = WebTestClient.bindToController(controller).build()
+    val exceptionHandler = GlobalExceptionHandler()
+    val webTestClient = WebTestClient.bindToController(controller)
+        .controllerAdvice(exceptionHandler)
+        .build()
 
     beforeTest {
         io.mockk.clearMocks(ticketingService)
@@ -65,7 +68,7 @@ class TicketControllerTest : FunSpec({
         verify(exactly = 1) { ticketingService.reserve(1L, 100L) }
     }
 
-    test("POST /api/v1/tickets/reserve - 재고 부족 시 에러를 반환한다") {
+    test("POST /api/v1/tickets/reserve - 재고 부족 시 409 Conflict를 반환한다") {
         // Given
         val request = TicketReserveRequest(
             eventId = 1L,
@@ -80,6 +83,57 @@ class TicketControllerTest : FunSpec({
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(request)
             .exchange()
-            .expectStatus().is5xxServerError
+            .expectStatus().isEqualTo(409)
+            .expectBody()
+            .jsonPath("$.status").isEqualTo(409)
+            .jsonPath("$.error").isEqualTo("Conflict")
+            .jsonPath("$.message").isEqualTo("Inventory is empty")
+            .jsonPath("$.path").isEqualTo("/api/v1/tickets/reserve")
+    }
+
+    test("POST /api/v1/tickets/reserve - 존재하지 않는 이벤트 요청 시 400 Bad Request를 반환한다") {
+        // Given
+        val request = TicketReserveRequest(
+            eventId = 999L,
+            userId = 100L
+        )
+
+        every { ticketingService.reserve(999L, 100L) } throws IllegalArgumentException("Event not found")
+
+        // When & Then
+        webTestClient.post()
+            .uri("/api/v1/tickets/reserve")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(request)
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody()
+            .jsonPath("$.status").isEqualTo(400)
+            .jsonPath("$.error").isEqualTo("Bad Request")
+            .jsonPath("$.message").isEqualTo("Event not found")
+            .jsonPath("$.path").isEqualTo("/api/v1/tickets/reserve")
+    }
+
+    test("POST /api/v1/tickets/reserve - 이벤트가 아직 오픈되지 않았을 때 400 Bad Request를 반환한다") {
+        // Given
+        val request = TicketReserveRequest(
+            eventId = 1L,
+            userId = 100L
+        )
+
+        every { ticketingService.reserve(1L, 100L) } throws IllegalArgumentException("Not available yet")
+
+        // When & Then
+        webTestClient.post()
+            .uri("/api/v1/tickets/reserve")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(request)
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody()
+            .jsonPath("$.status").isEqualTo(400)
+            .jsonPath("$.error").isEqualTo("Bad Request")
+            .jsonPath("$.message").isEqualTo("Not available yet")
+            .jsonPath("$.path").isEqualTo("/api/v1/tickets/reserve")
     }
 })

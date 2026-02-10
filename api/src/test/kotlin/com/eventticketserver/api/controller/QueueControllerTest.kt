@@ -1,6 +1,7 @@
 package com.eventticketserver.api.controller
 
 import com.eventticketserver.api.dto.QueueEnterRequest
+import com.eventticketserver.api.exception.GlobalExceptionHandler
 import com.eventticketserver.queue.service.QueuePosition
 import com.eventticketserver.queue.service.QueueService
 import com.eventticketserver.queue.service.QueueTokenService
@@ -17,7 +18,10 @@ class QueueControllerTest : FunSpec({
     val queueService = mockk<QueueService>()
     val queueTokenService = mockk<QueueTokenService>()
     val controller = QueueController(queueService, queueTokenService)
-    val webTestClient = WebTestClient.bindToController(controller).build()
+    val exceptionHandler = GlobalExceptionHandler()
+    val webTestClient = WebTestClient.bindToController(controller)
+        .controllerAdvice(exceptionHandler)
+        .build()
 
     beforeTest {
         clearMocks(queueService, queueTokenService)
@@ -101,5 +105,23 @@ class QueueControllerTest : FunSpec({
             .jsonPath("$.estimatedWaitSeconds").isEqualTo(4)
 
         verify(exactly = 1) { queueService.getPosition(1L, 100L) }
+    }
+
+    test("GET /api/v1/queue/position - 대기열에 없는 사용자 조회 시 409 Conflict를 반환한다") {
+        // Given
+        every { queueService.getPosition(1L, 999L) } throws IllegalStateException("User not found in queue")
+
+        // When & Then
+        webTestClient.get()
+            .uri("/api/v1/queue/position?eventId=1&userId=999")
+            .exchange()
+            .expectStatus().isEqualTo(409)
+            .expectBody()
+            .jsonPath("$.status").isEqualTo(409)
+            .jsonPath("$.error").isEqualTo("Conflict")
+            .jsonPath("$.message").isEqualTo("User not found in queue")
+            .jsonPath("$.path").isEqualTo("/api/v1/queue/position")
+
+        verify(exactly = 1) { queueService.getPosition(1L, 999L) }
     }
 })
