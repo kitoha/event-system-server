@@ -1,6 +1,6 @@
 package com.eventticketserver.domain.event.repository
 
-import com.eventticketserver.common.IntegrationTestSupport
+import com.eventticketserver.common.IntegrationTestSupportMarker
 import com.eventticketserver.DomainTestApplication
 import com.eventticketserver.domain.event.entity.Event
 import io.kotest.core.spec.style.FunSpec
@@ -8,13 +8,11 @@ import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Import
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @SpringBootTest(classes = [DomainTestApplication::class])
 @Transactional
-@Import(IntegrationTestSupport::class)
 class EventRepositoryTest(
     private val eventRepository: EventRepository
 ) : FunSpec({
@@ -38,4 +36,4 @@ class EventRepositoryTest(
         foundEvent.totalSeats shouldBe defaultSeats
         foundEvent.id shouldNotBe null
     }
-})
+}), IntegrationTestSupportMarker

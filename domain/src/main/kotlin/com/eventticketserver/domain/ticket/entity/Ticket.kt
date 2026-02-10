@@ -22,6 +22,9 @@ class Ticket private constructor(
     @Column(nullable = false)
     var status: TicketStatus,
 
+    @Column(name = "request_id", unique = true)
+    val requestId: String? = null,
+
     @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
@@ -30,13 +33,14 @@ class Ticket private constructor(
 ) {
 
     companion object {
-        fun reserve(event: Event, userId: Long): Ticket {
+        fun reserve(event: Event, userId: Long, requestId: String? = null): Ticket {
             check(event.isOpen()) { "Ticket reservation is not available yet" }
 
             return Ticket(
                 event = event,
                 userId = userId,
-                status = TicketStatus.PENDING
+                status = TicketStatus.PENDING,
+                requestId = requestId
             )
         }
     }

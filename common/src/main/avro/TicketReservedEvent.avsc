@@ -1,0 +1,27 @@
+{
+  "namespace": "com.eventticketserver.common.event",
+  "type": "record",
+  "name": "TicketReservedEvent",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "long",
+      "doc": "이벤트 ID"
+    },
+    {
+      "name": "userId",
+      "type": "long",
+      "doc": "사용자 ID"
+    },
+    {
+      "name": "requestId",
+      "type": "string",
+      "doc": "요청 ID (멱등성 보장)"
+    },
+    {
+      "name": "createdAt",
+      "type": "string",
+      "doc": "생성 시간"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+spring:
+  kafka:
+    listener:
+      concurrency: 3
+    consumer:
+      group-id: test-consumer-group
+      auto-offset-reset: earliest
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  flyway:
+    enabled: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+app:
+  kafka:
+    topics:
+      ticket-reserved: ticket-reserved
