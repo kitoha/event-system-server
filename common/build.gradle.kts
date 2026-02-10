@@ -1,4 +1,11 @@
+plugins {
+    alias(libs.plugins.avro)
+}
+
 dependencies {
+    implementation(libs.avro.core)
+    implementation(libs.kafka.avro.serializer)
+    
     testFixturesImplementation(libs.springBootStarterTest)
     testFixturesImplementation(libs.springBootTestcontainers)
     testFixturesImplementation(libs.testcontainers.postgresql)
@@ -12,4 +19,9 @@ tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar
 
 tasks.getByName<Jar>("jar") {
     enabled = true
+}
+
+avro {
+    // Generate private fields with getters/setters (Bean style)
+    fieldVisibility.set("PRIVATE")
 }

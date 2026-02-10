@@ -4,6 +4,9 @@ dependencies {
     implementation(libs.springBootStarterDataJpa)
     implementation(libs.springBootStarterDataRedis)
     implementation(libs.springKafka)
+    implementation(libs.avro.core)
+    implementation(libs.kafka.avro.serializer)
+    
     testImplementation(testFixtures(project(":common")))
 }
 

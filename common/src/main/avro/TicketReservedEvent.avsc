@@ -1,0 +1,23 @@
+{
+  "type": "record",
+  "name": "TicketReservedEvent",
+  "namespace": "com.eventticketserver.common.event",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "long"
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "requestId",
+      "type": "string"
+    },
+    {
+      "name": "createdAt",
+      "type": "string"
+    }
+  ]
+}

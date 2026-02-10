@@ -7,11 +7,14 @@ kotest = "5.9.0"
 mockk = "1.13.12"
 testcontainers = "1.20.4"
 testcontainersRedis = "2.2.3"
+avro = "1.11.3"
+confluent = "7.5.3"
 
 # Image Versions
 postgresImage = "postgres:15.10-alpine3.21"
 redisImage = "redis:7.4.2-alpine3.21"
 kafkaImage = "confluentinc/cp-kafka:7.5.3"
+schemaRegistryImage = "confluentinc/cp-schema-registry:7.5.3"
 
 [libraries]
 # Kotlin
@@ -27,6 +30,10 @@ springBootStarterBatch = { group = "org.springframework.boot", name = "spring-bo
 springKafka = { group = "org.springframework.kafka", name = "spring-kafka" }
 flywayCore = { group = "org.flywaydb", name = "flyway-core" }
 flywayDatabasePostgresql = { group = "org.flywaydb", name = "flyway-database-postgresql" }
+
+# Avro & Confluent
+avro-core = { group = "org.apache.avro", name = "avro", version.ref = "avro" }
+kafka-avro-serializer = { group = "io.confluent", name = "kafka-avro-serializer", version.ref = "confluent" }
 
 # Testing
 springBootStarterTest = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
@@ -47,3 +54,4 @@ kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotl
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
 springDependencyManagement = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+avro = { id = "com.github.davidmc24.gradle.plugin.avro", version = "1.9.1" }

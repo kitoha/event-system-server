@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.jpa) apply false
     alias(libs.plugins.spring.boot) apply false
     alias(libs.plugins.springDependencyManagement)
+    alias(libs.plugins.avro) apply false
 }
 
 allprojects {
@@ -12,6 +13,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven { url = uri("https://packages.confluent.io/maven/") }
     }
 }
 
