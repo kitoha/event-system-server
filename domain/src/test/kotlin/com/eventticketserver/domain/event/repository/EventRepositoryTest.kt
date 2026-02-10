@@ -1,6 +1,6 @@
 package com.eventticketserver.domain.event.repository
 
-import com.eventticketserver.common.IntegrationTestSupport
+import com.eventticketserver.common.IntegrationTestSupportMarker
 import com.eventticketserver.DomainTestApplication
 import com.eventticketserver.domain.event.entity.Event
 import io.kotest.core.spec.style.FunSpec
@@ -36,4 +36,4 @@ class EventRepositoryTest(
         foundEvent.totalSeats shouldBe defaultSeats
         foundEvent.id shouldNotBe null
     }
-}), IntegrationTestSupport
+}), IntegrationTestSupportMarker

@@ -1,6 +1,6 @@
 package com.eventticketserver.domain.ticket.repository
 
-import com.eventticketserver.common.IntegrationTestSupport
+import com.eventticketserver.common.IntegrationTestSupportMarker
 import com.eventticketserver.DomainTestApplication
 import com.eventticketserver.domain.event.entity.Event
 import com.eventticketserver.domain.event.repository.EventRepository
@@ -55,4 +55,4 @@ class TicketRepositoryTest(
         tickets.size shouldBe 2
         tickets.all { it.userId == defaultUserId } shouldBe true
     }
-}), IntegrationTestSupport
+}), IntegrationTestSupportMarker
