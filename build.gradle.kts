@@ -49,6 +49,7 @@ subprojects {
         "testImplementation"(libsCatalog.testcontainers.postgresql)
         "testImplementation"(libsCatalog.testcontainers.kafka)
         "testImplementation"(libsCatalog.testcontainers.redis)
+        "testImplementation"(libsCatalog.awaitility)
         "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
     }
 

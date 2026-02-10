@@ -9,15 +9,12 @@ import com.eventticketserver.domain.ticket.entity.TicketStatus
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Import
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @SpringBootTest(classes = [DomainTestApplication::class])
 @Transactional
-@Import(IntegrationTestSupport::class)
 class TicketRepositoryTest(
     private val ticketRepository: TicketRepository,
     private val eventRepository: EventRepository
@@ -58,4 +55,4 @@ class TicketRepositoryTest(
         tickets.size shouldBe 2
         tickets.all { it.userId == defaultUserId } shouldBe true
     }
-})
+}), IntegrationTestSupport

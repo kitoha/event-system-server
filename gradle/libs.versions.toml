@@ -47,6 +47,7 @@ testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jup
 testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainers" }
 testcontainers-kafka = { group = "org.testcontainers", name = "kafka", version.ref = "testcontainers" }
 testcontainers-redis = { group = "com.redis", name = "testcontainers-redis", version.ref = "testcontainersRedis" }
+awaitility = { group = "org.awaitility", name = "awaitility-kotlin", version = "4.2.1" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
