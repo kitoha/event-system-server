@@ -5,6 +5,8 @@ import com.eventticketserver.api.dto.QueueEnterResponse
 import com.eventticketserver.api.dto.QueuePositionResponse
 import com.eventticketserver.queue.service.QueueService
 import com.eventticketserver.queue.service.QueueTokenService
+import kotlinx.coroutines.flow.map
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -36,6 +38,17 @@ class QueueController(
         val position = queueService.getPosition(eventId, userId)
 
         return QueuePositionResponse(
+            position = position.position,
+            estimatedWaitSeconds = position.estimatedWaitSeconds
+        )
+    }
+
+    @GetMapping("/stream", produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    fun stream(
+        @RequestParam eventId: Long,
+        @RequestParam userId: Long
+    ) = queueService.streamPosition(eventId, userId).map { position ->
+        QueuePositionResponse(
             position = position.position,
             estimatedWaitSeconds = position.estimatedWaitSeconds
         )

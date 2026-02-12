@@ -6,10 +6,12 @@ import com.eventticketserver.queue.service.QueuePosition
 import com.eventticketserver.queue.service.QueueService
 import com.eventticketserver.queue.service.QueueTokenService
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.flowOf
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 
@@ -123,5 +125,38 @@ class QueueControllerTest : FunSpec({
             .jsonPath("$.path").isEqualTo("/api/v1/queue/position")
 
         verify(exactly = 1) { queueService.getPosition(1L, 999L) }
+    }
+
+    test("GET /api/v1/queue/stream - SSE로 실시간 대기 순번을 스트리밍한다") {
+        // Given
+        val positions = flowOf(
+            QueuePosition(position = 3, estimatedWaitSeconds = 2),
+            QueuePosition(position = 2, estimatedWaitSeconds = 1),
+            QueuePosition(position = 1, estimatedWaitSeconds = 0)
+        )
+
+        every { queueService.streamPosition(1L, 100L) } returns positions
+
+        // When & Then
+        val result = webTestClient.get()
+            .uri("/api/v1/queue/stream?eventId=1&userId=100")
+            .accept(MediaType.TEXT_EVENT_STREAM)
+            .exchange()
+            .expectStatus().isOk
+            .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM)
+            .returnResult(com.eventticketserver.api.dto.QueuePositionResponse::class.java)
+
+        val body = result.responseBody.collectList().block()!!
+
+        // Then
+        body.size shouldBe 3
+        body[0].position shouldBe 3
+        body[0].estimatedWaitSeconds shouldBe 2
+        body[1].position shouldBe 2
+        body[1].estimatedWaitSeconds shouldBe 1
+        body[2].position shouldBe 1
+        body[2].estimatedWaitSeconds shouldBe 0
+
+        verify(exactly = 1) { queueService.streamPosition(1L, 100L) }
     }
 })
